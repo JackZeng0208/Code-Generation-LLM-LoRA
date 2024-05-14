@@ -1,20 +1,23 @@
 from datasets import load_dataset
+import json
+
 dataset = load_dataset("deepmind/code_contests")
 dataset = dataset["train"]
-def process_instance(instance):
+
+processed_dataset = []
+for instance in dataset:
     description = instance["description"]
     python_solution = None
     for lang, code in zip(instance["solutions"]["language"], instance["solutions"]["solution"]):
         if lang == 3:
-            print
             python_solution = code
             break
-    
     if python_solution is None:
-        return
-    return {
-        "description": description,
-        "python_solution": python_solution
-    }
-processed_dataset = list(map(process_instance, dataset))
-print(processed_dataset[:10])
+        continue
+    processed_dataset.append({
+        "question": description,
+        "answer": python_solution
+    })
+
+with open("code_contests_filtered.json", "w") as file:
+    json.dump(processed_dataset, file, indent=2)
