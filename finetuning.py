@@ -3,7 +3,7 @@ from typing import Optional
 
 import torch
 from torch.utils.data import DataLoader
-from transformers import LlamaForCausalLM, LlamaTokenizer, TrainingArguments, Trainer
+from transformers import LlamaForCausalLM, LlamaTokenizer, TrainingArguments, Trainer, B
 
 from lora import lora, mark_only_lora_as_trainable
 
@@ -45,7 +45,7 @@ def main():
     tokenizer = LlamaTokenizer.from_pretrained(model_name)
 
     with lora(r=8, alpha=16, dropout=0.05, enabled=True):
-        model = LlamaForCausalLM.from_pretrained(model_name)
+        model = LlamaForCausalLM.from_pretrained(model_name,)
 
     mark_only_lora_as_trainable(model)
 
