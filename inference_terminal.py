@@ -1,4 +1,3 @@
-import gradio as gr
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftModel, LoraConfig
 import torch
@@ -47,30 +46,15 @@ def generate_code(input_question, given_code, use_lora, max_new_tokens, top_p, t
     answer = tokenizer.decode(outputs[0][prompt_length:])
     return answer
 
-iface = gr.Interface(
-    fn=generate_code,
-    inputs=[
-        gr.Textbox(label="Input Question"),
-        gr.Textbox(label="Given Code"),
-        gr.Checkbox(label="Use LoRA Adapter"),
-        gr.Slider(minimum=1, maximum=4096, step=1, value=512, label="Max New Tokens"),
-        gr.Slider(minimum=0.0, maximum=1.0, step=0.1, value=0.5, label="Top P"),
-        gr.Slider(minimum=1, maximum=100, step=1, value=1, label="Top K"),
-        gr.Slider(minimum=0.1, maximum=2.0, step=0.1, value=1, label="Temperature")
-    ],
-    outputs=gr.Code(language="python"),
-    title="Code Generation with Llama-2-7b",
-    description="Generate Python code based on the input question and given code."
-)
+if __name__ == "__main__":
+    input_question = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target."
+    given_code = "def twoSum(self, nums: List[int], target: int) -> List[int]:"
+    use_lora = True
+    max_new_tokens = 512
+    top_p = 0.5
+    top_k = 1
+    temperature = 1.0
 
-iface.launch()
-
-# input_question1 = "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target."
-# given_code1 = "class Solution: def twoSum(self, nums: List[int], target: int) -> List[int]:"
-# use_lora1 = True
-# max_new_tokens1 = 512
-# top_p1 = 0.9
-# top_k1 = 2
-# temperature1 = 0
-
-# print(generate_code(input_question1, given_code1, use_lora1, max_new_tokens1, top_p1, top_k1, temperature1))
+    generated_code = generate_code(input_question, given_code, use_lora, max_new_tokens, top_p, top_k, temperature)
+    print("Generated Code:")
+    print(generated_code)

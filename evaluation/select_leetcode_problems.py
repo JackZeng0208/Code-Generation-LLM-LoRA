@@ -8,7 +8,7 @@ problem_data = dataset["train"]
 problem_ids = problem_data["id"]
 problem_slugs = problem_data["slug"]
 
-selected_indices = random.sample(range(len(problem_ids)), min(600, len(problem_ids)))
+selected_indices = random.sample(range(len(problem_ids)), min(100, len(problem_ids)))
 selected_problems = [(problem_ids[i], problem_slugs[i]) for i in selected_indices]
 csv_filename = 'selected_leetcode_problems.csv'
 with open(csv_filename, 'w', newline='') as file:

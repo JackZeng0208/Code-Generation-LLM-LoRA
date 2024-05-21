@@ -2,6 +2,7 @@ import torch
 from datasets import load_dataset
 from transformers import LlamaForCausalLM, LlamaTokenizer, Trainer, TrainingArguments, DataCollatorForLanguageModeling, BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+import deepspeed
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -48,7 +49,32 @@ def train(base_model, dataset_name, max_input_length, max_target_length, output_
     
     data = load_dataset(dataset_name)
     train_data = data["train"].shuffle().map(generate_and_tokenize_prompt)
-
+    deepspeed_config = {
+        "train_batch_size": 1,
+        "gradient_accumulation_steps": 4,
+        "optimizer": {
+            "type": "Adam",
+            "params": {
+                "lr": 1e-4
+            }
+        },
+        "bf16": {
+            "enabled": True
+        },
+        "zero_optimization": {
+            "stage": 2,
+            "offload_optimizer": {
+                "device": "cpu",
+                "pin_memory": True
+            },
+            "allgather_partitions": True,
+            "allgather_bucket_size": 2e8,
+            "overlap_comm": True,
+            "reduce_scatter": True,
+            "reduce_bucket_size": 2e8,
+            "contiguous_gradients": True
+        }
+    }
     trainer = Trainer(
         model=model,
         train_dataset=train_data,
@@ -60,6 +86,7 @@ def train(base_model, dataset_name, max_input_length, max_target_length, output_
             fp16=True,
             logging_steps=10,
             output_dir=output_dir,
+            deepspeed=deepspeed_config
         ),
         data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
     )
@@ -68,9 +95,9 @@ def train(base_model, dataset_name, max_input_length, max_target_length, output_
     model.save_pretrained(output_dir)
 
 if __name__ == "__main__":
-    base_model = "meta-llama/Llama-2-7b-chat-hf"
+    base_model = "meta-llama/Llama-2-13b-chat-hf"
     dataset_name = "Rabinovich/Code-Generation-LLM-LoRA"
-    output_dir = "Code-Generation-LLM-LoRA/model"
+    output_dir = "Code-Generation-LLM-LoRA/model_13B"
     max_input_length = 512
     max_target_length = 256
     train(base_model, dataset_name, max_input_length, max_target_length, output_dir)
