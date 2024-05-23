@@ -1,5 +1,5 @@
 import json
-files = ["Code-Generation-LLM-LoRA/data/code_contests_filtered.json", "Code-Generation-LLM-LoRA/data/code_contests_filtered.json"]
+files = ["Code-Generation-LLM-LoRA/data/code_contests_filtered.json", "Code-Generation-LLM-LoRA/data/evol_instruct_code_filtered.json"]
 with open("Code-Generation-LLM-LoRA/data/lora_fine_tuning_data.json", "w") as file:
     for f in files:
         with open(f, "r") as f:

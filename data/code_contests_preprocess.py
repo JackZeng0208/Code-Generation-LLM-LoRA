@@ -18,6 +18,6 @@ for instance in dataset:
         "question": description,
         "answer": python_solution
     })
-
+print(len(processed_dataset))
 with open("code_contests_filtered.json", "w") as file:
     json.dump(processed_dataset, file, indent=2)

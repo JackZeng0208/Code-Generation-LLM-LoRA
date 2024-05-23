@@ -14,6 +14,6 @@ for instance in dataset:
             "question": instruction,
             "answer": output
         })
-processed_dataset = random.sample(processed_dataset, 12000)
+print(len(processed_dataset))
 with open("evol_instruct_code_filtered.json", "w") as file:
     json.dump(processed_dataset, file, indent=2)
