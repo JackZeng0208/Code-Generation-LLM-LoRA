@@ -3,3 +3,4 @@ transformers
 peft
 tqdm
 datasets
+accelerate

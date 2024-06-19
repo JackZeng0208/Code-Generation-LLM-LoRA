@@ -1,8 +1,6 @@
-import torch
 from datasets import load_dataset
 from transformers import LlamaForCausalLM, LlamaTokenizer, Trainer, TrainingArguments, DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-import deepspeed
 from accelerate.utils import DistributedType
 
 def train(base_model, dataset_name, max_input_length, max_target_length, output_dir, resume_from_checkpoint=None):
