@@ -1,7 +1,6 @@
 # Reference: https://github.com/Lightning-AI/lit-llama/blob/main/scripts/prepare_alpaca.py
 # Reference: https://github.com/tloen/alpaca-lora
 import torch
-import requests
 import json
 from torch.utils.data import random_split
 from transformers import LlamaTokenizer

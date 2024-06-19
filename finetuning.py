@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 import torch
 from torch.utils.data import DataLoader
@@ -42,10 +41,8 @@ def main():
     model_name = "meta-llama/Llama-2-7b-chat-hf"
     data_dir = "Code-Generation-LLM-LoRA/data"
 
-    tokenizer = LlamaTokenizer.from_pretrained(model_name)
-
     with lora(r=8, alpha=16, dropout=0.05, enabled=True):
-        model = LlamaForCausalLM.from_pretrained(model_name,)
+        model = LlamaForCausalLM.from_pretrained(model_name,torch_dtype=torch.bfloat16)
 
     mark_only_lora_as_trainable(model)
 

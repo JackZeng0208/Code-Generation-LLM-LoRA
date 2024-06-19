@@ -1,6 +1,5 @@
 from datasets import load_dataset
 import json
-import random
 
 dataset = load_dataset("nickrosh/Evol-Instruct-Code-80k-v1")
 dataset = dataset["train"]
