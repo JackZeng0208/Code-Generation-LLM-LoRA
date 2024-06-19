@@ -1,6 +1,15 @@
-# Code Generation LLM Based on LoRA and Instruction Tuning
+# Improving Llama-2-7B Code Generation for Python Code Using LoRA
 
-## Datasets
+Here's our full report:
 
-- Code_Contests
-- [nickrosh/Evol-Instruct-Code-80k-v1 · Datasets at Hugging Face](https://huggingface.co/datasets/nickrosh/Evol-Instruct-Code-80k-v1)
+[Final Report](./Final_Report.pdf)
+
+# Installation and Usage
+
+Install necessary libraries:
+
+```bash
+pip install -r requirements.txt
+```
+
+Usage: Run `inference.py` directly
